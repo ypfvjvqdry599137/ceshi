@@ -85,6 +85,7 @@ function cacheElements() {
   el.categoryInput = document.getElementById("categoryInput");
   el.tagsInput = document.getElementById("tagsInput");
   el.formMessage = document.getElementById("formMessage");
+  el.manageOnly = Array.from(document.querySelectorAll(".manage-only"));
 }
 
 function bindEvents() {
@@ -161,8 +162,9 @@ function handleMobileCategoryClick(e) {
 
 function handleToggleViewMode() {
   state.manageMode = !state.manageMode;
+  if (!state.manageMode) state.selectedIds.clear();
   renderAll();
-  updateListMessage(state.manageMode ? "已进入管理模式。" : "已切换回卡片视图。", "success");
+  updateListMessage(state.manageMode ? "已进入管理模式：可批量整理与编辑删除。" : "已切换为浏览模式：专注导航浏览。", "success");
 }
 
 function openCreateModal() {
@@ -301,7 +303,12 @@ function renderContent() {
 }
 
 function renderViewModeControls() {
-  el.viewToggleBtn.textContent = state.manageMode ? "卡片模式" : "管理模式";
+  el.viewToggleBtn.textContent = state.manageMode ? "退出管理模式" : "进入管理模式";
+  el.viewToggleBtn.classList.toggle("active", state.manageMode);
+  el.viewToggleBtn.setAttribute("aria-pressed", String(state.manageMode));
+  el.manageOnly.forEach((node) => {
+    node.classList.toggle("hidden", !state.manageMode);
+  });
 }
 
 function renderCategorySidebar() {
@@ -435,21 +442,26 @@ function createSiteCard(bookmark) {
   });
 
   const actions = document.createElement("div");
-  actions.className = "card-actions";
-  const editBtn = document.createElement("button");
-  editBtn.type = "button";
-  editBtn.className = "card-action-btn";
-  editBtn.textContent = "编辑";
-  editBtn.addEventListener("click", () => openEditModal(bookmark));
+  if (state.manageMode) {
+    actions.className = "card-actions";
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "card-action-btn";
+    editBtn.textContent = "编辑";
+    editBtn.addEventListener("click", () => openEditModal(bookmark));
 
-  const deleteBtn = document.createElement("button");
-  deleteBtn.type = "button";
-  deleteBtn.className = "card-action-btn danger";
-  deleteBtn.textContent = "删除";
-  deleteBtn.addEventListener("click", async () => deleteBookmark(bookmark));
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.className = "card-action-btn danger";
+    deleteBtn.textContent = "删除";
+    deleteBtn.addEventListener("click", async () => deleteBookmark(bookmark));
 
-  actions.append(editBtn, deleteBtn);
-  card.append(link, tagRow, actions);
+    actions.append(editBtn, deleteBtn);
+    card.append(link, tagRow, actions);
+    return card;
+  }
+
+  card.append(link, tagRow);
   return card;
 }
 function renderTable(filtered) {

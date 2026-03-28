@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OneNav Lite - 书签管理</title>
+  <title>OneNav Lite - 导航首页</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -11,12 +11,12 @@
     <aside class="sidebar">
       <div class="brand-wrap">
         <h1 class="brand-title">OneNav Lite</h1>
-        <p class="brand-subtitle">单用户服务器版，支持多设备同步访问</p>
+        <p class="brand-subtitle">单用户版导航站，支持多设备同步浏览。</p>
       </div>
 
-      <button id="openAddModalBtn" class="btn btn-primary" type="button">+ 添加链接</button>
+      <button id="openAddModalBtn" class="btn btn-primary manage-only hidden" type="button">+ 添加链接</button>
 
-      <div class="side-actions">
+      <div class="side-actions manage-only hidden">
         <button id="importBtn" class="btn btn-secondary" type="button">导入 HTML</button>
         <button id="exportBtn" class="btn btn-secondary" type="button">导出 HTML</button>
         <input id="importFile" type="file" accept=".html,text/html" hidden />
@@ -30,7 +30,7 @@
         <ul id="categoryList" class="category-list"></ul>
       </section>
 
-      <p class="side-tip">数据保存在服务器的 <code>data/bookmarks.json</code> 文件。</p>
+      <p class="side-tip">数据保存于服务器 <code>data/bookmarks.json</code> 文件。</p>
     </aside>
 
     <main class="main-content">
@@ -45,7 +45,7 @@
         <div class="topbar-meta">
           <span id="resultCount">显示 0 / 0 条</span>
           <button id="refreshBtn" class="mini-btn" type="button">从服务器刷新</button>
-          <button id="viewToggleBtn" class="mini-btn" type="button">管理模式</button>
+          <button id="viewToggleBtn" class="mini-btn manage-toggle" type="button" aria-pressed="false">进入管理模式</button>
           <span id="syncStatus" class="sync-status">已连接</span>
         </div>
       </header>
@@ -61,7 +61,7 @@
         <span id="selectedCount" class="selected-count">已选 0 项</span>
         <input id="batchCategoryInput" type="text" class="batch-input" placeholder="批量改分类为..." />
         <button id="batchMoveBtn" class="mini-btn" type="button">批量改分类</button>
-        <input id="batchTagsInput" type="text" class="batch-input" placeholder="批量追加标签（逗号分隔）" />
+        <input id="batchTagsInput" type="text" class="batch-input" placeholder="批量加标签（逗号分隔）" />
         <button id="batchTagBtn" class="mini-btn" type="button">批量加标签</button>
         <button id="batchDeleteBtn" class="mini-btn danger" type="button">批量删除</button>
         <button id="clearSelectionBtn" class="mini-btn" type="button">清空选择</button>
