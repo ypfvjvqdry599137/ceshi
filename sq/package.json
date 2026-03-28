@@ -1,0 +1,13 @@
+{
+  "name": "onenav-lite-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Single-user bookmark manager with pure frontend and lightweight Node backend.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

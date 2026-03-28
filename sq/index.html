@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OneNav Lite - 书签管理</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <h1 class="brand-title">OneNav Lite</h1>
+        <p class="brand-subtitle">单用户服务器版，支持多设备同步访问</p>
+      </div>
+
+      <button id="openAddModalBtn" class="btn btn-primary" type="button">+ 添加链接</button>
+
+      <div class="side-actions">
+        <button id="importBtn" class="btn btn-secondary" type="button">导入 HTML</button>
+        <button id="exportBtn" class="btn btn-secondary" type="button">导出 HTML</button>
+        <input id="importFile" type="file" accept=".html,text/html" hidden />
+      </div>
+
+      <section class="category-panel">
+        <div class="panel-head">
+          <h2>分类导航</h2>
+          <span id="categoryCount" class="muted-text">0</span>
+        </div>
+        <ul id="categoryList" class="category-list"></ul>
+      </section>
+
+      <p class="side-tip">数据保存在服务器的 <code>data/bookmarks.json</code> 文件。</p>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="search-wrap">
+          <label for="searchInput">搜索（标题 / 标签 / 链接）</label>
+          <div class="search-row">
+            <input id="searchInput" type="search" placeholder="输入关键词快速筛选..." />
+            <button id="clearSearchBtn" class="mini-btn" type="button">清空</button>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <span id="resultCount">显示 0 / 0 条</span>
+          <button id="refreshBtn" class="mini-btn" type="button">从服务器刷新</button>
+          <button id="viewToggleBtn" class="mini-btn" type="button">管理模式</button>
+          <span id="syncStatus" class="sync-status">已连接</span>
+        </div>
+      </header>
+
+      <p id="listMessage" class="list-message" aria-live="polite"></p>
+      <div id="mobileQuickCategories" class="mobile-quick-cats"></div>
+
+      <section id="batchPanel" class="batch-panel hidden">
+        <label class="check-inline">
+          <input id="selectAllVisible" type="checkbox" />
+          全选当前结果
+        </label>
+        <span id="selectedCount" class="selected-count">已选 0 项</span>
+        <input id="batchCategoryInput" type="text" class="batch-input" placeholder="批量改分类为..." />
+        <button id="batchMoveBtn" class="mini-btn" type="button">批量改分类</button>
+        <input id="batchTagsInput" type="text" class="batch-input" placeholder="批量追加标签（逗号分隔）" />
+        <button id="batchTagBtn" class="mini-btn" type="button">批量加标签</button>
+        <button id="batchDeleteBtn" class="mini-btn danger" type="button">批量删除</button>
+        <button id="clearSelectionBtn" class="mini-btn" type="button">清空选择</button>
+      </section>
+
+      <section id="bookmarkSections" class="bookmark-sections" aria-live="polite"></section>
+
+      <section id="bookmarkTableWrap" class="table-wrap hidden" aria-live="polite">
+        <table class="bookmark-table">
+          <thead>
+            <tr>
+              <th class="c-select">选中</th>
+              <th>标题</th>
+              <th>链接</th>
+              <th>分类</th>
+              <th>标签</th>
+              <th class="c-time">添加时间</th>
+              <th class="c-action">操作</th>
+            </tr>
+          </thead>
+          <tbody id="bookmarkTableBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div id="bookmarkModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">添加链接</h3>
+        <button id="closeModalBtn" class="icon-btn" type="button" aria-label="关闭">×</button>
+      </div>
+
+      <form id="bookmarkForm" class="bookmark-form" novalidate>
+        <input id="editIdInput" type="hidden" />
+
+        <label for="titleInput">标题（可选）</label>
+        <input id="titleInput" name="title" type="text" placeholder="可留空，系统会根据网址自动获取" />
+
+        <label for="urlInput">链接</label>
+        <input id="urlInput" name="url" type="url" placeholder="例如：https://platform.openai.com" required />
+
+        <label for="categoryInput">分类</label>
+        <input id="categoryInput" name="category" type="text" placeholder="例如：AI 工具" />
+
+        <label for="tagsInput">标签（逗号分隔）</label>
+        <input id="tagsInput" name="tags" type="text" placeholder="例如：文档, API, 大模型" />
+
+        <button type="submit" class="btn btn-primary">保存</button>
+      </form>
+
+      <p id="formMessage" class="form-message" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script src="/script.js" defer></script>
+</body>
+</html>
